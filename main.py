@@ -263,6 +263,17 @@ while True:
         rem = menuRemover()
 
         if rem['opcao'] == 'Cliente':
+            with driver.session() as session:
+                result = session.run("MATCH (cli:Cliente) OPTIONAL MATCH (cli)-[:CLIENTE_ENDERECO]->(end:Endereco) RETURN cli.cliCod, cli.nome, cli.sobrenome, cli.telefone, cli.cpf, cli.rg, cli.dtnascimento, cli.genero, end.endId ORDER BY toInteger(cli.cliCod) ASC")
+                if result.peek() is None:
+                    print("Não houve resultados.")
+                else:
+                    table = PrettyTable()
+                    table.field_names = result.keys()
+                    for record in result:
+                        table.add_row(record.values())
+                    print(table)
+
             codcliente = input("Insira o Codigo do Cliente: ")
             cliCod = int(codcliente)
             with driver.session() as session:
@@ -279,6 +290,17 @@ while True:
             input("Press Enter to continue...")
 
         if rem['opcao'] == 'Funcionario':
+            with driver.session() as session:
+                result = session.run("MATCH (func:Funcionario)-[:FUNCIONARIO_ENDERECO]->(end:Endereco) RETURN func.funcCod, func.nome, func.sobrenome, func.telefone, func.cpf, func.rg, func.email, func.dtnascimento, func.genero, func.estadocivil, end.endId ORDER BY toInteger(func.funcCod) ASC")
+                if result.peek() is None:
+                    print("Não houve resultados.")
+                else:
+                    table = PrettyTable()
+                    table.field_names = result.keys()
+                    for record in result:
+                        table.add_row(record.values())
+                    print(table)
+
             codfuncionario = input("Insira o Codigo do Funcionario: ")
             funcCod = int(codfuncionario)
             with driver.session() as session:
@@ -295,6 +317,17 @@ while True:
             input("Press Enter to continue...")
 
         if rem['opcao'] == 'Serviço':
+            with driver.session() as session:
+                result = session.run("MATCH (serv:Servico) RETURN serv.servCod, serv.tiposervico, serv.preco, serv.tempomedio ORDER BY toInteger(serv.servCod) ASC")
+                if result.peek() is None:
+                    print("Não houve resultados.")
+                else:
+                    table = PrettyTable()
+                    table.field_names = result.keys()
+                    for record in result:
+                        table.add_row(record.values())
+                    print(table)
+
             codservico = input("Insira o Codigo do Serviço: ")
             servCod = int(codservico)
             with driver.session() as session:
@@ -310,6 +343,17 @@ while True:
             input("Press Enter to continue...")
 
         if rem['opcao'] == 'Agendamento':
+            with driver.session() as session:
+                result = session.run("MATCH (agen:Agendamento)-[:AGENDAMENTO_FUNCIONARIO]->(func:Funcionario), (agen)-[:AGENDAMENTO_CLIENTE]->(cli:Cliente), (agen)-[:AGENDAMENTO_SERVICO]->(serv:Servico) RETURN agen.agenCod, agen.dataagendamento, agen.hora, agen.situacao, func.funcCod, cli.cliCod, serv.servCod ORDER BY toInteger(agen.agenCod) ASC")
+                if result.peek() is None:
+                    print("Não houve resultados.")
+                else:
+                    table = PrettyTable()
+                    table.field_names = result.keys()
+                    for record in result:
+                        table.add_row(record.values())
+                    print(table)
+
             codagendamento = input("Insira o Codigo do Agendamento: ")
             agenCod = int(codagendamento)
             with driver.session() as session:
@@ -329,6 +373,145 @@ while True:
 # ---------------------------EDITAR------------------------------------
     if res['opcao'] == 'Editar':
         ed = menuEditar()
+
+        if ed['opcao'] == 'Cliente':
+            with driver.session() as session:
+                result = session.run("MATCH (cli:Cliente) OPTIONAL MATCH (cli)-[:CLIENTE_ENDERECO]->(end:Endereco) RETURN cli.cliCod, cli.nome, cli.sobrenome, cli.telefone, cli.cpf, cli.rg, cli.dtnascimento, cli.genero, end.endId ORDER BY toInteger(cli.cliCod) ASC")
+                if result.peek() is None:
+                    print("Não houve resultados.")
+                else:
+                    table = PrettyTable()
+                    table.field_names = result.keys()
+                    for record in result:
+                        table.add_row(record.values())
+                    print(table)
+
+            codcliente = input("Insira o Codigo do Cliente: ")
+            cliCod = int(codcliente)
+            nome = input("Nome: ")
+            sobrenome = input("Sobrenome: ")
+            telefone = input("Telefone: ")
+            cpf = input("CPF: ")
+            if len(cpf) == 0: cpf = 'NULL'
+            rg = input("RG: ")
+            if len(rg) == 0: rg = 'NULL'
+            dtnascimento = input("Data Nascimento (ano-mes-dia): ")
+            if len(dtnascimento) == 0: dtnascimento = 'NULL'
+            genero = generoC()
+            if genero['opcao'] == 'Não Informar': genero['opcao'] = 'NULL'
+
+            with driver.session() as session:
+                result = session.run(""" MATCH (cli:Cliente {cliCod: $cliCod}) SET cli.nome = $nome, cli.sobrenome = $sobrenome, cli.telefone = $telefone, cli.cpf = $cpf, cli.rg = $rg, cli.dtnascimento = $dtnascimento, cli.genero = $genero """, cliCod=cliCod, nome=nome, sobrenome=sobrenome, telefone=telefone, cpf=cpf, rg=rg, dtnascimento=dtnascimento, genero=genero['opcao'])
+                print("Nó Cliente alterado com sucesso!")
+            input("Press Enter to continue...")
+
+        if ed['opcao'] == 'Funcionario':
+            with driver.session() as session:
+                result = session.run("MATCH (func:Funcionario)-[:FUNCIONARIO_ENDERECO]->(end:Endereco) RETURN func.funcCod, func.nome, func.sobrenome, func.telefone, func.cpf, func.rg, func.email, func.dtnascimento, func.genero, func.estadocivil, end.endId ORDER BY toInteger(func.funcCod) ASC")
+                if result.peek() is None:
+                    print("Não houve resultados.")
+                else:
+                    table = PrettyTable()
+                    table.field_names = result.keys()
+                    for record in result:
+                        table.add_row(record.values())
+                    print(table)
+
+            codfuncionario = input("Insira o Codigo do Funcionario: ")
+            funcCod = int(codfuncionario)
+            nome = input("Nome: ")
+            sobrenome = input("Sobrenome: ")
+            telefone = input("Telefone: ")
+            cpf = input("CPF: ")
+            rg = input("RG: ")
+            email = input("E-mail: ")
+            dtnascimento = input("Data Nascimento (ano-mes-dia): ")
+            gen = generoF()
+            estcivil = estadocivil()
+
+            with driver.session() as session:
+                result = session.run(""" MATCH (func:Funcionario {funcCod: $funcCod}) SET func.nome = $nome, func.sobrenome = $sobrenome, func.telefone = $telefone, func.cpf = $cpf, func.rg = $rg, func.email = $email, func.dtnascimento = $dtnascimento, func.genero = $genero, func.estadocivil = $estadocivil """, funcCod=funcCod, nome=nome, sobrenome=sobrenome, telefone=telefone, cpf=cpf, rg=rg, email=email, dtnascimento=dtnascimento, genero=gen['opcao'], estadocivil=estcivil['opcao'])
+                print("Nó Funcionario alterado com sucesso!")
+            input("Press Enter to continue...")
+
+        if ed['opcao'] == 'Endereço':
+            editar = editarEndereco()
+            if editar['opcao'] == 'Cliente': 
+                with driver.session() as session:
+                    result = session.run("MATCH (cli:Cliente) OPTIONAL MATCH (cli)-[:CLIENTE_ENDERECO]->(end:Endereco) RETURN cli.cliCod, cli.nome, cli.sobrenome, cli.telefone, cli.cpf, cli.rg, cli.dtnascimento, cli.genero, end.endId ORDER BY toInteger(cli.cliCod) ASC")
+                    if result.peek() is None:
+                        print("Não houve resultados.")
+                    else:
+                        table = PrettyTable()
+                        table.field_names = result.keys()
+                        for record in result:
+                            table.add_row(record.values())
+                        print(table)
+                
+                idendereco = input("Insira o ID do Endereço: ")
+                endId = int(idendereco)
+                with driver.session() as session:
+                    result = session.run("MATCH (end:Endereco {endId: $endId}) RETURN end.endId, end.bairro, end.rua, end.numero, end.complemento, end.uf, end.cidade", endId=endId)
+                    if result.peek() is None:
+                        print("Não houve resultados.")
+                    else:
+                        table = PrettyTable()
+                        table.field_names = result.keys()
+                        for record in result:
+                            table.add_row(record.values())
+                        print(table)
+
+                bairro = input("Bairro: ")
+                rua = input("Rua: ")
+                numero = input("Número: ")
+                numero = int(numero)
+                complemento = input("Complemento: ")
+                if len(complemento) == 0: complemento = 'NULL'
+                uf = input("UF: ")
+                cidade = input("Cidade: ")
+
+                with driver.session() as session:
+                    result = session.run(""" MATCH (end:Endereco {endId: $endId}) SET end.bairro = $bairro, end.rua = $rua, end.numero = $numero, end.complemento = $complemento, end.uf = $uf, end.cidade = $cidade """, endId=endId, bairro=bairro, rua=rua, numero=numero, complemento=complemento, uf=uf, cidade=cidade)
+                    print("Nó Endereço alterado com sucesso!")
+            else:
+                with driver.session() as session:
+                    result = session.run("MATCH (func:Funcionario)-[:FUNCIONARIO_ENDERECO]->(end:Endereco) RETURN func.funcCod, func.nome, func.sobrenome, func.telefone, func.cpf, func.rg, func.email, func.dtnascimento, func.genero, func.estadocivil, end.endId ORDER BY toInteger(func.funcCod) ASC")
+                    if result.peek() is None:
+                        print("Não houve resultados.")
+                    else:
+                        table = PrettyTable()
+                        table.field_names = result.keys()
+                        for record in result:
+                            table.add_row(record.values())
+                        print(table)
+                
+                idendereco = input("Insira o ID do Endereço: ")
+                endId = int(idendereco)
+                with driver.session() as session:
+                    result = session.run("MATCH (end:Endereco {endId: $endId}) RETURN end.endId, end.bairro, end.rua, end.numero, end.complemento, end.uf, end.cidade", endId=endId)
+                    if result.peek() is None:
+                        print("Não houve resultados.")
+                    else:
+                        table = PrettyTable()
+                        table.field_names = result.keys()
+                        for record in result:
+                            table.add_row(record.values())
+                        print(table)
+                
+                bairro = input("Bairro: ")
+                rua = input("Rua: ")
+                numero = input("Número: ")
+                numero = int(numero)
+                complemento = input("Complemento: ")
+                if len(complemento) == 0: complemento = 'NULL'
+                uf = input("UF: ")
+                cidade = input("Cidade: ")
+                
+                with driver.session() as session:
+                    result = session.run(""" MATCH (end:Endereco {endId: $endId}) SET end.bairro = $bairro, end.rua = $rua, end.numero = $numero, end.complemento = $complemento, end.uf = $uf, end.cidade = $cidade """, endId=endId, bairro=bairro, rua=rua, numero=numero, complemento=complemento, uf=uf, cidade=cidade)
+                    print("Nó Endereço alterado com sucesso!")
+
+            input("Press Enter to continue...")
 
         if ed['opcao'] == 'Serviço':
             with driver.session() as session:
@@ -358,8 +541,50 @@ while True:
                 print("Nó Serviço alterado com sucesso!")
                 
             input("Press Enter to continue...")
-
+        
+        if ed['opcao'] == 'Agendamento':
+            with driver.session() as session:
+                result = session.run("MATCH (agen:Agendamento)-[:AGENDAMENTO_FUNCIONARIO]->(func:Funcionario), (agen)-[:AGENDAMENTO_CLIENTE]->(cli:Cliente), (agen)-[:AGENDAMENTO_SERVICO]->(serv:Servico) RETURN agen.agenCod, agen.dataagendamento, agen.hora, agen.situacao, func.funcCod, cli.cliCod, serv.servCod ORDER BY toInteger(agen.agenCod) ASC")
+                if result.peek() is None:
+                    print("Não houve resultados.")
+                else:
+                    table = PrettyTable()
+                    table.field_names = result.keys()
+                    for record in result:
+                        table.add_row(record.values())
+                    print(table)
             
+            codagendamento = input("Insira o Codigo do Agendamento: ")
+            agenCod = int(codagendamento)
+
+            op = operacaoAgendamento()
+            if op['opcao'] == 'Mudar a Situação':
+                sit = situacaoAgendamento()
+                if sit['opcao'] == 'Cancelado':
+                    situacao = 'cancelado'
+                    with driver.session() as session:
+                        result = session.run(""" MATCH (agen:Agendamento {agenCod: $agenCod}) SET agen.situacao = $situacao """, agenCod=agenCod, situacao=situacao)
+                        print("Atributo do Nó Agendamento alterado com sucesso!")
+                else:
+                    situacao = 'finalizado'
+                    with driver.session() as session:
+                        result = session.run(""" MATCH (agen:Agendamento {agenCod: $agenCod}) SET agen.situacao = $situacao """, agenCod=agenCod, situacao=situacao)
+                        print("Atributo do Nó Agendamento alterado com sucesso!")
+            if op['opcao'] == 'Mudar os Dados de Agendamentos':
+
+                dataagendamento = input("Informe a Data do Agendamento (ano-mes-dia): ")
+                hora = input("Informe a Hora: ")
+                funcCod= input("Informe o Codigo do Funcionario: ")
+                cliCod = input("Informe o Codigo do Cliente: ")
+                servCod = input("Informe o Codigo do servico: ")
+           
+                with driver.session() as session:
+                    result = session.run("""
+                            MATCH (agen:Agendamento {agenCod: $agenCod})
+                            SET agen.dataagendamento = $dataagendamento, agen.hora = $hora, agen.funcCod = $funcCod, agen.cliCod = $cliCod, agen.servCod = $servCod
+                    """, agenCod=agenCod, dataagendamento=dataagendamento, hora=hora, funcCod=funcCod, cliCod=cliCod, servCod=servCod)
+                    print("Nó Serviço alterado com sucesso!")
+            input("Press Enter to continue...")
                 
 # -----------------------------RELATORIOS------------------------------------------
     if res['opcao'] == 'Relatórios':

@@ -53,6 +53,16 @@ def menuEditar():
         answers = inquirer.prompt(editar)
         return answers
 
+def editarEndereco():
+        editarend = [
+                inquirer.List('opcao',
+                                message="Escolha entre Cliente e Funcionario para editar o Endereço",
+                                choices=['Cliente', 'Funcionario'],
+                            ),
+            ]
+        answers = inquirer.prompt(editarend)
+        return answers
+
 def menuRelatorios():
         relatorio = [
                 inquirer.List('opcao',
