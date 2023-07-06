@@ -55,8 +55,6 @@ Clique em executar
 
 <img width="67" alt="9" src="https://github.com/williandaniel/barbearia_neo4j/assets/40742096/f40e3004-676c-4c8a-b77e-65604f6f6666">
 
-## Configuração
-
 ## Executando e Compilando
  - Abrir o editor Visual Studio Code
  - Clique em File > Open Folder
