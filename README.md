@@ -2,14 +2,14 @@
 
 O Gerenciador de Barbearia é uma aplicação desenvolvida como projeto da disciplina de Banco de Dados II. O objetivo principal do projeto é fornecer uma solução para gerenciar o agendamento de serviços entre clientes e funcionários em uma barbearia. A aplicação utiliza o banco de dados não relacional Neo4j para armazenar e manipular os dados relacionados ao agendamento e aos serviços prestados.
 
-#Instruções para a compilação e execução da aplicação
-## Tecnologias Utilizadas
+## Instruções para a compilação e execução da aplicação
+### Tecnologias Utilizadas
 
  - Neo4j Desktop
  - Python
  - Visual Studio Code ou qualquer outro editor de texto
 
-## Faça uma Copia do Repositório para sua máquina
+### Faça uma Copia do Repositório para sua máquina
 
  - Clique em Code
  - Copie o link HTTPS para fazer o git clone
@@ -18,7 +18,7 @@ O Gerenciador de Barbearia é uma aplicação desenvolvida como projeto da disci
 
 <img width="638" alt="10" src="https://github.com/williandaniel/gerenciador_barbearia_neo4j/assets/40742096/2d262ac5-4f73-465a-a1a1-22cb285ed9c0">
 
-## Criando o Banco de Dados
+### Criando o Banco de Dados
  - Abrir o Neo4j Desktop
    
 <img width="244" alt="2" src="https://github.com/williandaniel/barbearia_neo4j/assets/40742096/209f4c02-f443-40a8-89e6-1922d2df5b3a">
@@ -51,11 +51,11 @@ O Gerenciador de Barbearia é uma aplicação desenvolvida como projeto da disci
 
  <img width="878" alt="8" src="https://github.com/williandaniel/barbearia_neo4j/assets/40742096/9cc7c7c5-9d8b-4944-ad4e-2f223dcab028">
 
-Clique em executar
+ - Clique em executar
 
 <img width="67" alt="9" src="https://github.com/williandaniel/barbearia_neo4j/assets/40742096/f40e3004-676c-4c8a-b77e-65604f6f6666">
 
-## Executando e Compilando
+### Executando e Compilando
  - Abrir o editor Visual Studio Code
  - Clique em File > Open Folder
  - Selecione a pasta que o repositório foi baixado
