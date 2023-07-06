@@ -16,6 +16,8 @@ O Gerenciador de Barbearia é uma aplicação desenvolvida como projeto da disci
  - Ou Clique em Download ZIP
  - Clique com o direito no arquivo ZIP na pasta que o arquivo se encontra e em extrair o conteúdo do arquivo
 
+<img width="638" alt="10" src="https://github.com/williandaniel/gerenciador_barbearia_neo4j/assets/40742096/2d262ac5-4f73-465a-a1a1-22cb285ed9c0">
+
 ## Criando o Banco de Dados
  - Abrir o Neo4j Desktop
    
